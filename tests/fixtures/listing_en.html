@@ -1,0 +1,856 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Events | Málaga CF</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="description" content="Buy your tickets here!" />
+<meta property="og:title" content="Málaga CF" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Málaga CF" />
+<meta property="og:image" content="https://static.koobin.com/static/malagacf/default/images/logo.png?v=v26299.2202607081257" />
+<meta property="og:url" content="https://entradas.malagacf.com/" />
+<meta property="og:description" content="Buy your tickets here!" />
+<meta property="og:locale" content="en_GB" /><meta property="og:locale:alternate" content="es_ES" />
+<meta property="og:locale:alternate" content="en_GB" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@MalagaCF" />
+<meta name="twitter:title" content="Málaga CF" />
+<meta name="twitter:description" content="Buy your tickets here!" />
+	<link rel="canonical" href="https://entradas.malagacf.com/?idioma=EN" />
+<link rel="alternate" hreflang="x-default" href="https://entradas.malagacf.com/" />
+<link rel="alternate" hreflang="es" href="https://entradas.malagacf.com/?idioma=ES" />
+<link rel="alternate" hreflang="en" href="https://entradas.malagacf.com/?idioma=EN" />
+<link rel="shortcut icon" href="https://static.koobin.com/static/malagacf/default/images/favicon.ico?v=v26299.2202607081257" />
+<link rel="stylesheet" type="text/css" href="https://static.koobin.com/static/malagacf/default/jquery-ui.custom.css?v=v26299.2202607081257" />
+<link rel="stylesheet" type="text/css" href="https://static.koobin.com/static/common/css/estils-common.css?v=v26299.2202607081257" />
+<link rel="stylesheet" type="text/css" href="https://static.koobin.com/static/malagacf/default/theme.css?v=v26299.2202607081257" />
+<link rel="stylesheet" type="text/css" href="https://static.koobin.com/static/malagacf/estils.css?v=v26299.2202607081257" />
+<link rel="stylesheet" type="text/css" href="https://static.koobin.com/static/common/js/highdpi/highdpi.css?v=v26299.2202607081257" />
+
+
+
+
+
+
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.min.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/highdpi/highdpi.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery-ui.custom.min.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.dialogOptions.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.ui.tooltip.min.js?v=v26299.2202607081257"></script><script type="text/javascript" src="https://static.koobin.com/static/common/js/funciones_publicas2.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.colourbrightness.min.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.lockfixed.js?v=v26299.2202607081257"></script>
+<script>
+var apiRootUrl = "https://api.koobin.com/malagacf";
+
+var dialog_cancelar = "Cancel";
+var dialog_aceptar = "OK";
+var dialog_cerrar = "Close";
+
+var num_items_compra = 0;
+
+function actualiza_contador_carrito(num_items)
+{
+	if (num_items != num_items_compra)
+	{
+		num_items_compra = num_items;
+		$(".contadorCarrito").html(num_items_compra);
+		if (num_items_compra > 0)
+		{
+			$(".contadorCarrito").show();
+		}
+		else
+		{
+			$(".contadorCarrito").hide();
+		}
+	}
+}
+function abrir_rrss()
+{
+	$("#capa_seguir_rrss").dialog({
+		resizable: false,
+		modal: true,
+		closeText: "Close",
+		hide: 'scale',
+		show: 'scale',
+		width: 365,
+		open: function() {
+			if ($("#capa_seguir_rrss").length) {
+				$("#capa_seguir_rrss").colourBrightness();
+			}
+		}
+	});
+}
+
+function error_conexion()
+{
+	$("#capa_error_conexion").dialog({
+		resizable: false,
+		modal: true,
+		closeText: "Connection error",
+		width: 'auto',
+		maxWidth: 700,
+		buttons: {
+			"Retry": function() {
+				$("#capa_error_conexion").dialog("close");
+				location.reload();
+			},
+			"Exit": function() {
+				$("#capa_error_conexion").dialog("close");
+				document.location = 'https://entradas.malagacf.com/';
+			}
+		}
+	});
+}
+
+function mas_entradas()
+{
+	let url_entradas;
+
+	if ("x" != "x") {
+		url_entradas = "";
+	} else {
+		url_entradas = "https://entradas.malagacf.com";
+	}
+
+	
+	
+	document.location = url_entradas;
+}
+//Borramos un item del sessionStorage que utilizamos para guardar la categoría del extra en la cual estaba el usuario
+function muestra_extras()
+{
+	sessionStorage.removeItem("kbn_malagacf_categoria_extra");
+	window.location = 'https://entradas.malagacf.com/en/more-products';
+}
+
+function boton_carrito()
+{
+	if(num_items_compra > 0)
+	{
+		window.location = 'https://entradas.malagacf.com/en/your-purchase';
+	}
+	else
+	{
+				$("#capa_carrito_vacio").dialog({
+			resizable: false,
+			modal: true,
+			closeText: "Close",
+			width: 'auto',
+			maxWidth: 700,
+			buttons: {
+													"Events": function() {
+											document.location = 'https://entradas.malagacf.com/';
+									}
+																					,				"Experiences": function() {
+					document.location = 'https://entradas.malagacf.com/en/more-products';
+				}
+							}		});
+	}
+}
+
+function confirma_logout(capa, url)
+{
+	if(num_items_compra > 0)
+	{
+		dialog_confirm(capa, url);
+	}
+	else
+	{
+		document.location = url;
+	}
+}
+
+function inicia_logout()
+{
+    confirma_logout('capa_logout', 'https://entradas.malagacf.com?action=logout');
+}
+
+function consultar_tarjeta_regalo()
+{
+	$("#capa_tarjeta_regalo").dialog({
+		resizable: false,
+		modal: true,
+		closeText: "Close",
+		minWidth: 550,
+		open: function() {
+			$("#codigo_tarjeta_regalo").val("");
+		}
+	});
+}
+
+function comprobar_saldo(selector_campo)
+{
+	$(selector_campo).val($(selector_campo).val().trim());
+
+	if($(selector_campo).length > 0)
+	{
+		var codigo = $(selector_campo).val();
+		if (codigo == "")
+		{
+			alert_dyn("Please enter the code of your gift card.", "alert", false, function() {
+				$(selector_campo).focus();
+			}, false, 450);
+		}
+		else
+		{
+			$.ajax(
+				{
+					type: "POST",
+					async: false,
+					url: 'https://entradas.malagacf.com/',
+					data: {
+						action: "PU_detalles_tarjeta_regalo",
+						num_tarjeta_regalo: codigo,
+						mostrar: false
+					},
+					success: function(cadena)
+					{
+						if (cadena == "KO") {
+							alert_dyn("We're sorry, but this gift card is not valid. Please make sure you enter its code correctly.", "alert", false, function() {
+								$(selector_campo).focus().select();
+							}, false, 450);
+						} else if (cadena == "NOAUT") {
+							alert_dyn("We're sorry, but this gift card is already linked to someone else's account.", "alert", false, function() {
+								$(selector_campo).focus().select();
+							}, false, 450);
+						} else if (cadena == "CAD") {
+							alert_dyn("We're sorry, but this gift card has expired.", "alert", false, function() {
+								$(selector_campo).focus().select();
+							}, false, 450);
+						} else {
+							result = JSON.parse(cadena);
+							if (result['saldo_restante'] > 0) {
+								$(selector_campo).val("").trigger("change");	
+								$(selector_campo).closest(".ui-dialog-content").dialog("close");	
+								mostrar_detalles_tarjeta(codigo, result['saldo_usado'], result['asignado']);
+							} else {
+								alert_dyn("The balance of this gift card has been used up.", "alert", false, function() {
+									$(selector_campo).focus().select();
+								}, false, 450);
+							}
+						}
+					}
+				});
+		}
+	}
+}
+
+function mostrar_detalles_tarjeta(codigo, importe_pendiente, asignado)
+{
+	$.ajax({
+		type: "POST",
+		async: false,
+		url: 'https://entradas.malagacf.com/',
+		data: {
+			action: "PU_detalles_tarjeta_regalo",
+			num_tarjeta_regalo: codigo,
+			mostrar: true,
+			importe: importe_pendiente
+		},
+		success: function(cadena)
+		{
+			if (cadena != "KO" && cadena != "NOAUT" && cadena != "CAD")
+			{
+				if (!asignado) {
+					confirm_dyn(cadena + '<br/>' + "You can link this gift card to your account. If you do it, you will always be able to see its updated balance in your <strong>Personal Area</strong>.", false, "Gift card", function () {
+						
+					}, "Close", "Link to my account", function() {
+								alert_dyn("In order to link the gift card to your account, we need to know who you are, so you must login (or sign up if you do not have an account yet).", false, false, function() {
+							submitData("https://entradas.malagacf.com/", {
+								action: "PU_asigna_tarjeta_regalo",
+								num_tarjeta_regalo: codigo
+							});
+						}, "Continue");
+							}, 500);
+				} else {
+					alert_dyn(cadena + '<br/>' + "This gift card is already linked to your account. Remember that you can always see its updated balance in your <strong>Personal Area</strong>.", false, "Gift card", false, "Close", 500);
+				}
+			}
+		}
+	});
+}
+
+function asignar_tarjeta_regalo(codigo)
+{
+	if (codigo)
+	{
+		$.ajax(
+			{
+				type: "POST",
+				async: false,
+				url: 'https://entradas.malagacf.com/',
+				data: {
+					action: "PU_asigna_tarjeta_regalo",
+					num_tarjeta_regalo: codigo,
+					ajax: true
+				},
+				success: function(cadena)
+				{
+					if (cadena == "OK")
+					{
+						alert_dyn("The gift card has been linked to your account.", "check", false, function() {
+							document.location = "https://entradas.malagacf.com/en/personal-information";
+						});
+					}
+					else
+					{
+						alert_dyn("We are sorry. The gift card could not be linked to your account.", "alert");
+					}
+				}
+			}
+		);
+	}
+}
+
+function modificar_paquete(PA_id, Ev_id_escoger)
+{
+	submitData("https://entradas.malagacf.com/", {
+		action: "PU_muestra_paquete",
+		Ev_id: PA_id,
+		Ev_id_escoger: Ev_id_escoger
+	});
+}
+
+function dialog_confirm(capa, url)
+{
+	$(function() {
+		$("#" + capa).dialog({
+			resizable: false,
+			modal: true,
+			closeText: "Close",
+			buttons: {
+				"Continue": function() {
+				  document.location = url;
+				},
+				"Cancel": function() {
+				  $( this ).dialog( "close" );
+				}
+		  	}
+		});
+	});
+}
+
+</script>
+
+
+
+<script>
+
+$(document).ready(function() {
+	if ($("#usuari").length)
+		$("#usuari").colourBrightness();
+
+	$(document).tooltip({
+		items: ":not(.noTooltips *)[title]",
+		content: function() {
+			return $(this).prop('title').replace(/\|/g, '<br/>');
+		},
+		track: true
+	});
+
+	highdpi_init();
+
+	var path = '/';
+	if (typeof cookiePath != 'undefined') {
+		path = cookiePath;
+	}
+
+	if (!isLocalStorageSupported())
+	{
+		if (GetCookie("avisado_nolocalstorage") != 1)
+		{
+			alert_dyn("Your web browser does not support storing settings locally. In Safari, the most common cause of this is using &quot;Private Browsing Mode&quot;. Some settings may not save or some features may not work properly for you.", "info", "Local storage not supported", function () {
+				CreateCookie("avisado_nolocalstorage", 1, 365 * 2, path);
+			});
+		}
+	}
+	else
+	{
+		DeleteCookie("avisado_nolocalstorage", path);
+	}
+
+
+	let numitems = getLocalStorageItem('kbn_malagacf_numitems');
+
+	if (numitems != '0') {
+		setLocalStorageItem('kbn_malagacf_numitems', '0');
+	}
+
+
+	$("#capa_tarjeta_regalo").on("keydown", function(event) {
+		if ($("#codigo_tarjeta_regalo").is(":focus")) {
+			if (event.which == 13) {
+				$(this).parent().find("#btnConsultarSaldo:visible").trigger("click");
+				return false;
+			}
+		}
+	});
+
+	$("#codigo_tarjeta_regalo").on("input", function() {
+		$(this).val($(this).val().replace(/^\s+/g, ""));	
+	});
+
+	$("#codigo_tarjeta_regalo").on("propertychange change keyup paste input keypress keydown", function() {
+		if ($(this).val() != "") {
+			$("#btnConsultarSaldoInactivo").hide();
+			$("#btnConsultarSaldo").show();
+		} else {
+			$("#btnConsultarSaldo").hide();
+			$("#btnConsultarSaldoInactivo").show();
+		}
+	});
+});
+
+let storage_handler = function (e)
+{
+	if (e.key == "kbn_malagacf_numitems")
+	{
+		actualiza_contador_carrito(parseTimedStorageValue(e.newValue));
+		if ($("#contenido_carrito").length > 0)
+		{
+			carga_carrito();
+		}
+	}
+	else if (e.key == "kbn_malagacf_sid_regenerado")
+	{
+		if (typeof pagina_tpv != "undefined" && pagina_tpv)
+		{
+			aviso_carro_mod("capa_sid_regenerado");
+		}
+	}
+};
+
+if (window.addEventListener)
+{
+	window.addEventListener('storage', storage_handler, false);
+}
+
+</script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+	{ lang: 'en_GB'}
+</script>
+</head>
+<body data-cat="malagacf">
+
+
+
+
+<script>
+	const cookiePath = '/';
+</script>
+<div id="overbox3">
+	<div id="infobox3">
+		<div class="textcookies">
+			<h3>We value your privacy</h3>
+			<p>We use cookies to enhance your browsing experience and analyze our traffic. By clicking "Accept all", you consent to our use of cookies. <a href="https://entradas.malagacf.com/en/cookies-policy">Read more.</a></p>
+		</div>
+		<div class="botonscookies">
+			<a href="javascript:" rel="nofollow" id="rechazar-overbox3" class="buttonBig" aria-label="Reject all"><span>Reject all</span></a>
+			<a href="javascript:" rel="nofollow" id="aceptar-overbox3" class="buttonBig" aria-label="Accept all"><span>Accept all</span></a>
+		</div>
+	</div>
+</div>
+
+<div class="contingutGlobal">
+<!-- // CAPCELERA INICI // -->
+<div class="capceleraGlobal">
+<div id="capcelera">
+	<div class="bannerEN"></div>
+</div>
+
+</div>
+<!-- // CAPCELERA FI // -->
+<!-- // PREMENU INICI (auth i idiomes)  // -->
+<div class="premenuGlobal">
+<div id="premenu">
+	
+			<div id="logo" class="logoDisseny">
+				<img src="https://static.koobin.com/static/malagacf/default/images/logo.png?v=v26299.2202607081257" alt="Málaga CF" border="0" class="replace-2x" />
+			</div>
+		    	<div class="authGen">
+	  			<div id="authInactiu">
+			<a class="button" href="https://entradas.malagacf.com?action=PU_ident_unica"><span>Login</span></a>
+		</div>
+	    				<div id="authActiu" style="display:none"><div id="usuari">
+			<img src="https://static.koobin.com/static/malagacf/default/images/icona_user.png" width="12" height="16" align="absmiddle" /> <span class="Taronja" id="user_auth"></span></div>
+			<a data-track-action="account.logout" class="button" href="javascript:inicia_logout();"><span>Logout</span></a>		</div>
+			</div>
+    		<div class="idiomaGen">
+	  <div id="idioma">
+	  		  <a href="https://entradas.malagacf.com/?idioma=ES&act=1">
+			  ES
+		  </a>
+		  &nbsp;&nbsp;&nbsp;	  		  <a href="https://entradas.malagacf.com/?idioma=EN&act=1">
+			  EN
+		  </a>
+		  	  	  </div>
+	</div>
+		
+</div>
+
+</div>
+<!-- // PREMENU FI (auth i idiomes)  // -->
+<!-- // MENU INICI // -->
+<div id="menu">
+  <div id="iniciomenu" class="menumobil">
+    <ul id="menuPrincipal">
+					<li id="mnuItemEventos"><a href="https://entradas.malagacf.com/" class="itemEvents activo">Events</a></li>
+								<li id="mnuItemTemporadaAparte_214"><a href="https://entradas.malagacf.com?id_temporada=214">Museo</a></li>
+				<li id="mnuItemTemporadaAparte_2394"><a href="https://entradas.malagacf.com?id_temporada=2394">Escape room</a></li>
+										<li id="mnuItemSocios"><a href="https://entradas.malagacf.com/en/members">Members</a></li>
+				<li id="mnuItemExtras"><a href="javascript:muestra_extras();" class="itemExtres">Experiences</a></li>
+				<li id="mnuItemZonaPersonal"><a href="https://entradas.malagacf.com/en/personal-information" class="itemPersonal">Personal area</a></li>
+		        <li id="mnuItemPersonalizado"><a href="https://www.tiendamalagacf.com/" target="_blank" rel="noopener noreferrer" class="itemTienda">Shop</a></li>
+			<li id="mnuItemFAQ"><a href="https://entradas.malagacf.com/en/FAQ" class="itemFaq">FAQ</a></li>
+				<li id="mnuItemCarrito"><a href="javascript:boton_carrito();" class="itemCistella" title="Your shopping basket"></a></li>
+  	</ul>
+  </div>
+  </div>
+<!-- // MENU FI // -->
+<!-- // INFO GENERAL INICI // -->
+<div class="infoGeneralGlobal">
+<div id="infoGeneral">
+		<div id="evento" class="eventoUni">
+								<span class="previTitol">Ticket sales</span>
+	  	</div>
+
+	
+						<div id="infoPagina">Welcome to our ticketing system.<br />Here you can get your tickets in an easy and practical way.</div>
+			</div>
+</div>
+<!-- // INFO GENERAL FI // -->
+<!-- // CONTINGUT INICI // -->
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+		
+    	$(window).on("resize", function() {
+			$(window).trigger("scroll");
+		});
+
+        
+                $("[id^='gFitxaGen']").each(function() {
+            var id = $(this).attr('id');
+            id = id.split('_');
+
+            var gFitxa = $(this).find("#gFitxa_" + id[1]);
+            $(this).find(".InfoNormal").click(function(){
+                $("#G_InfoEvent_"+id[1] ).dialog( "open" );
+                $(gFitxa).addClass("Hover");
+
+            });
+            $(this).find(".InfoSinFoto").click(function(){
+                $( "#G_InfoEvent_sinFoto_"+id[1] ).dialog( "open" );
+                $(gFitxa).addClass("Hover");
+
+            });
+            $( "#G_InfoEvent_" + id[1] ).dialog({
+                resizable: false,
+                responsive: false,
+                show: { effect: "fadeIn"},
+                hide: { effect: "fadeOut"},
+                autoOpen: false,
+                width: 960,
+                modal: true,
+                closeText: "Close",
+                close: function() {
+                    $("#gFitxa_" + id[1] ).removeClass("Hover");
+                },
+				open: function() {
+					
+					let $dialog = $(this).dialog("widget");
+					$.each(this.attributes, function () {
+						if (this.name.indexOf("data-") === 0) {
+							$dialog.attr(this.name, this.value);
+						}
+					});
+				}
+            });
+            $( "#G_InfoEvent_sinFoto_" + id[1] ).dialog({
+                resizable: false,
+                responsive: false,
+                show: { effect: "fadeIn"},
+                hide: { effect: "fadeOut"},
+                autoOpen: false,
+                width: 660,
+                modal: true,
+                closeText: "Close",
+                close: function() {
+                    $("#gFitxa_" + id[1] ).removeClass("Hover");
+                },
+				open: function() {
+                    
+					let $dialog = $(this).dialog("widget");
+					$.each(this.attributes, function () {
+						if (this.name.indexOf("data-") === 0) {
+							$dialog.attr(this.name, this.value);
+						}
+					});
+				}
+            });
+        });
+        
+        if ($("#divError").html() != "")
+        {
+            $("#divError").show();
+        }
+    });
+
+</script>
+    
+<div id="contingut" class="eventGridGlobal">
+	<div id="divError" class="divError corner" style="display:none"></div>
+    <div class="gridGlobal">
+		<div id="infoExtra2" class="hideEmpty"></div>
+                <h2></h2>
+                					
+			
+		                <div class="gridGen">
+                                    	            		                		            							                							            <!-- // FITXA EVENT GRID INICI // -->
+            <div id="gFitxaGen_2304" class="gFitxaGen" data-season="2019">
+                
+                <div id="gFitxa_2304" class="gFitxa infoTodo  ">
+                    <div class="gFoto">
+                                                    <img width="318" height="239" src="https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjozMTgsImhlaWdodCI6MjM5LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=837ababd398a0db0ec93b6baaf317bba0980a6c80ec85aab2a9ff184fe03edf9" srcset="https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjozMTgsImhlaWdodCI6MjM5LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=837ababd398a0db0ec93b6baaf317bba0980a6c80ec85aab2a9ff184fe03edf9, https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjo2MzYsImhlaWdodCI6NDc4LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=22f9e863b7c7132cee25842f230888ffb2977a696fe62f3aee3fd226c389ae31 2x, https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjo5NTQsImhlaWdodCI6NzE3LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=242b81564ef935cf71bc672f29b1e8cbe1fb35fd4cc23fe55d6d057dfcf72009 3x" alt="" loading="lazy"/>
+                                            </div>
+                    <div class="gEfecte"></div>
+                                        <div class="gData">
+                        <span class="gDia">7</span>
+                        <span class="gMes">Nov</span>
+					                        </div>
+                                        <div class="gContingut">
+                        <div class="gTexto">
+                            <div class="gTitol">
+                                <h1 class="tresPunts"><span class="gTitSpan">MÁLAGA CF - R. RACING CLUB</span></h1></div>
+                            <div class="gDesc">
+                                                                									<span class="nomEspai">LAROSALEDA</span>
+                                    <br clear="all"/>                                                                																														<span class="dataE">Saturday, 7/11/2026 14:00</span>
+																											                                									                                <div class="gInfo"><a class="buttonInfo InfoNormal" href="javascript:" aria-label="More information about &quot;MÁLAGA CF - R. RACING CLUB&quot;"><span>More information</span></a></div>
+									                                                            </div>
+                        </div>
+                        <div class="gBoto">
+                                                                                                                        								                                                                                    <a data-track-action="select" data-track-type="event" class="buttonGrid" href="https://entradas.malagacf.com/en/malaga-cf---r.-racing-club-20261108-2100"><span>Purchase tickets</span></a>
+							                                                </div>
+                    </div>
+					                </div>
+            </div>
+            <!-- // FITXA EVENT GRID  FI // -->
+                                	            <!-- // DIALOG INICI // -->
+            <div id="G_InfoEvent_2304" data-season="2019" style="display:none">
+                
+				<div class="masInfoGen ">
+                    <div class="masInfoC1">
+                        <h1>MÁLAGA CF - R. RACING CLUB</h1>
+                                                                            <h4 class="nomEspai">LAROSALEDA</h4>
+                        																				<h3>
+																Saturday, 7/11/2026 14:00															</h3>
+													                        <div class="masInfoDesc" tabindex="0">
+                                                                                        <div style="text-align: center;">
+<p data-pm-slice="1 1 []"><span style="font-size: 14pt;"><strong>Experience an unforgettable matchday at La Rosaleda!</strong></span></p>
+<p><span style="font-size: 14pt;">Discover our matchday experiences and enjoy a memorable day with Málaga CF.</span></p>
+</div>
+                                                    </div>
+                    </div>
+                    <div class="masInfoC2">
+                                                <div class="masInfoFoto">
+                            <img width="385" height="289" src="https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjozODUsImhlaWdodCI6Mjg5LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=7fb4c257f2955f180b5cff77f9c3b6e73e5cf039d4a488cd50cddb622a1b799f" srcset="https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjozODUsImhlaWdodCI6Mjg5LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=7fb4c257f2955f180b5cff77f9c3b6e73e5cf039d4a488cd50cddb622a1b799f, https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjo3NzAsImhlaWdodCI6NTc4LCJmaXQiOiJjb3ZlciIsInBvc2l0aW9uIjoiZW50cm9weSJ9fX0=?signature=3097b46771c5068bb2fe0d0d0c0e58239aaada65f647850c4c543788f061ba61 2x, https://cache-c.koobin.com/eyJidWNrZXQiOiJsaXZlLWtvb2Jpbi1tZWRpYSIsImtleSI6Im1lZGlhL21hbGFnYWNmL2ZvdG9zL01pbmlhdHVyYXMvVGVtcG9yYWRhIDIwMjYuMjcvTVx1MDBjMUxBR0EgQ0YgLSBSQUNJTkcucG5nIiwiZWRpdHMiOnsiYW5pbWF0ZWQiOnRydWUsInJvdGF0ZSI6bnVsbCwicmVzaXplIjp7IndpZHRoIjoxMTU1LCJoZWlnaHQiOjg2NywiZml0IjoiY292ZXIiLCJwb3NpdGlvbiI6ImVudHJvcHkifX19?signature=46f4a961c20066498e68c260c8f921b6d2ed6b5f3885f5e13e56e805ef4a0b13 3x" alt="" loading="lazy"/>
+						</div>
+                                                <div class="masInfoBoton">
+                                                                                                                        <a data-track-action="select" data-track-type="event" href="https://entradas.malagacf.com/en/malaga-cf---r.-racing-club-20261108-2100" class="buttonMaxi"><span>Purchase tickets</span></a>
+								                                                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // DIALOG FI // -->
+						                	            	                                                        <div class="gFitxaGen">
+                    <div class="gFitxa gVacio"></div>
+                </div>
+                                            <div class="gFitxaGen">
+                    <div class="gFitxa gVacio"></div>
+                </div>
+                                            <div class="gFitxaGen">
+                    <div class="gFitxa gVacio"></div>
+                </div>
+            
+        </div>
+                                    			        
+									<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.event.move.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/jquery.event.swipe.js?v=v26299.2202607081257"></script>
+<script type="text/javascript" src="https://static.koobin.com/static/common/js/jquery/js/unslider/unslider-min.js?v=v26299.2202607081257"></script>
+<link type="text/css" href="https://static.koobin.com/static/common/js/jquery/js/unslider/unslider.css?v=v26299.2202607081257" rel="stylesheet" />
+<script type="text/javascript" language="JavaScript">
+function iniciaScroll(sScroll, sText, s0mbra) {
+	var pixels_per_second = 20;
+
+	
+	$(sScroll).stop();
+	if ($(sScroll).scrollTop() == 0) {
+		$(sScroll).delay(($(sScroll).height() / pixels_per_second) * 1000);
+	}
+
+	var distance = Math.abs($(sText).height() - $(sScroll).scrollTop());
+	var scroll_duration = (distance / pixels_per_second) * 1000;
+
+	$(sScroll).animate({ scrollTop: $(sText).height() }, scroll_duration, "linear", function () {
+		$(s0mbra).stop().fadeOut('slow');
+	});
+}
+
+$(document).ready(function() {
+	var slider = $('.sliderH').unslider({
+		arrows: false,
+		nav: false,
+		delay: 5000, 				autoplay: true
+	});
+
+	$(".sFitxa").each(function() {
+		if ($(this).find(".sText").height() <= $(this).find(".sDesc").height()) {
+			$(this).find(".sOmbra").hide();
+		}
+	});
+
+	$(".sFitxa").hover(function(e) {
+		slider.unslider('stop');
+
+		
+		if (!$(this).find(e.fromElement).length) {
+			var sText = $(this).find(".sText");
+			var sScroll = $(this).find(".sScroll");
+			var s0mbra = $(this).find(".sOmbra");
+
+			
+			$(sScroll).stop().scrollTop(0);
+			if ($(sText).height() > $(this).find(".sDesc").height()) {
+				$(s0mbra).stop().show();
+			}
+
+			
+			iniciaScroll(sScroll, sText, s0mbra);
+		}
+
+		
+		var sTitol = $(this).find(".sTitol h1");
+		var maxTitSpan = $(this).find(".sTitol h1 .sTitSpan");
+
+		$(sTitol).stop().removeClass("tresPunts");
+		$(sTitol).stop().delay(1000).animate({ scrollLeft: $(maxTitSpan).width() }, 5000, "linear");
+	}, function() {
+		slider.unslider('start');
+
+		
+		var sTitol = $(this).find(".sTitol h1");
+
+		$(sTitol).stop().scrollLeft(0);
+		$(sTitol).stop().addClass("tresPunts");
+			});
+
+	$(".sFitxa .sText a").hover(function() {
+		$(this).closest(".sScroll").stop(true);
+	}, function() {
+		iniciaScroll($(this).closest(".sScroll"), $(this).closest(".sText"), $(this).closest(".sOmbra"));
+	});
+});
+</script>
+<h3 class="hideEmpty">More with your events:</h3><div class="sContenidorGeneral sTipoH">
+	<div class="sliderH">
+		<ul>
+									<li>
+						<div class="sFitxa noFoto noPreu">
+							<div class="sContingut">
+						<div class="sTitol">
+											<h1 class="tresPunts"><span class="sTitSpan"><span class="primeraPalabra">EXPERIENCIAS</span> DÍA DE PARTIDO</span></h1>
+								</div>
+						<div class="sDesc">
+							<div class="sScroll">
+								<div class="sText"><span style="color: #3598db;"><span style="color: #3598db;"><strong><span style="font-size: 14pt; font-family: 'arial black', 'avant garde';">Experience La Rosaleda like never before</span></strong></span></span><span style="color: #3598db;"><strong><br /></strong></span></div>
+							</div>
+							<div class="sOmbra"></div>
+						</div>
+		
+					</div>					<a href="https://entradas.malagacf.com/en/more-products?id=2" class="sSeleccio" aria-label="Select &quot;EXPERIENCIAS DÍA DE PARTIDO&quot;"></a>
+				</div>
+					</li>
+								</ul>
+	</div>
+</div>
+
+        
+                    </div>
+</div>
+<!-- // CONTINGUT FI // -->
+</div>
+
+<!-- // PEU INICI // -->
+<form name="info" id="info" method="post" action="https://entradas.malagacf.com/">
+	<div class="caixaPeu">
+	
+	<div id="peu">
+	
+		<div id="infoClub">
+		
+			MÁLAGA CF<br />
+					Telephone: <a href="tel:+34952104488">952104488</a> <br clear="all" />
+					Email: <a href="mailto:ticketing@malagacf.es">ticketing@malagacf.es</a><br />
+				<div class="hideEmpty"></div>
+				<br/><a href="javascript:abrir_rrss();"><strong>Follow us!</strong></a><br />
+				<br />
+			<a href="javascript:mostrar_aviso_legal('https://entradas.malagacf.com/');">Disclaimer</a>
+			<br/><a href="https://www.malagacf.com/politica-de-privacidad-dsp" target="_blank" rel="noopener noreferrer">Privacy Policy</a>			<br/><a href="https://entradas.malagacf.com/en/cookies-policy" target="_blank" rel="noopener noreferrer">Cookies policy</a>					</div>
+		<div id="infoRedesSociales" class="noTooltips hideEmpty">
+				<a href="javascript:consultar_tarjeta_regalo();"><strong>Do you have a gift card?</strong></a>
+			</div>
+		<div id="logoKoobin"><span>Powered by</span><a href="http://www.koobin.com" target="_blank" rel="noopener noreferrer" aria-label="Koobin"></a></div>
+	
+	</div>
+</div>
+<input type="hidden" name="ajax" value="true" />
+<input type="hidden" name="action" id="action" value="" />
+</form>
+<div class="recuperar" id="popup" style="display:none" title="Notice">
+	<div class="recuperarDiv"></div>
+</div>
+<div id="horario_venta" style="display:none" title=""></div>
+<div id="capa_aviso_legal" style="display:none" title="Disclaimer"></div>
+<div id="capa_logout" style="display:none" title="User session">You are about to logout. The content of your shopping basking will be lost.</div>
+<div id="capa_carrito_vacio" style="display:none" title="Your basket is empty">
+	<input type="hidden" autofocus="autofocus" />
+	<p>You have not added anything to your shopping basket yet.</p>
+	<p>Start your purchase using any of the following options:</p>
+</div>
+<div id="capa_error_conexion" style="display: none" title="Connection error">
+	<input type="hidden" autofocus="autofocus" />
+	<p>Couldn't connect with the event provider.</p>
+</div>
+<!-- // PEU FI // -->
+<div id="capa_tarjeta_regalo" style="display:none" title="Do you have a gift card?" class="codigoPromo">
+	<p>If you have purchased or received a gift card, enter its code here to check its available balance:</p>
+		<div class="caixaAuth corner">
+		<div style="overflow:hidden;">
+			<div class="floatR">
+				Gift card
+				<input type="text" placeholder="Code" name="codigo_tarjeta_regalo" id="codigo_tarjeta_regalo" value="" class="campgran2" size="14" maxlength="35"/>
+				<div id="btnConsultarSaldoInactivo" class="buttonBigINACTIU" style="margin-top:1px;"><span>Check balance</span></div>
+				<a id="btnConsultarSaldo" onclick="comprobar_saldo('#codigo_tarjeta_regalo');" class="buttonBig" href="javascript:" style="margin-top:1px; display:none;"><span>Check balance</span></a>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="capa_seguir_rrss" class="noTooltips" title="Follow us!" style="display:none">
+	<input type="hidden" autofocus="autofocus" />
+			<br/><div class="ico-instagram"><a href="https://www.instagram.com/malagacf" title="View malagacf Instagram profile" target="_blank" rel="noopener noreferrer">malagacf</a></div><br/></div>
+
+
+<script>
+	if ($("#logoKoobin").length) {
+		$("#logoKoobin").colourBrightness();
+	}
+	hideIfEmpty(".hideEmpty");
+	addVersionToImages('v26299.2202607081257');
+</script>
+
+
+
+<script src="https://static.koobin.com/static/common/js/cookie_consent.js?v=v26299.2202607081257"></script>
+</body>
+</html>
