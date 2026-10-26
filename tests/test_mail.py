@@ -20,7 +20,7 @@ def test_target_mail():
     state = {}
     update(state, [BETIS], NOW)
     mail = m.new_events_mail([BETIS], [], *parts(state))
-    assert mail.subject.startswith("🚨 BETIS-KAARTEN ONLINE")
+    assert mail.subject.startswith("Betis-kaarten online")
     assert "1 van 2 vakken beschikbaar · vanaf €60,00" in mail.text
     assert 'href="https://entradas.malagacf.com/en/betis"' in mail.html
 
@@ -44,3 +44,23 @@ def test_status_due():
     assert status_due({"status_sent": "2026-10-26"}, monday_9)
     assert status_due({"status_sent": "2026-10-26"}, tuesday)  # Monday's run was missed
     assert not status_due({"status_sent": "2026-11-02"}, tuesday)
+
+
+FORWARD_WORDS = ("staat aan", "nieuw online", "betis", "wachtrij", "gestopt")  # the Outlook forwarding rule
+
+
+def forwarded(subject: str) -> bool:
+    return any(w in subject.lower() for w in FORWARD_WORDS)
+
+
+def test_forwarding_rule_subjects():
+    state = {}
+    update(state, [BETIS], NOW)
+    athletic = Event("2320", "MÁLAGA CF - ATHLETIC CLUB", "LAROSALEDA", "29/11/2026 18:30",
+                     datetime(2026, 11, 29, 18, 30, tzinfo=TZ), "https://x", "Purchase tickets", None)
+    for mail in (m.welcome_mail([BETIS], *parts(state)), m.new_events_mail([athletic], [], *parts(state)),
+                 m.new_events_mail([BETIS], [], *parts(state)), m.new_events_mail([], [(BETIS, ["x"])], *parts(state)),
+                 m.queue_mail(), m.finished_mail(*parts(state))):
+        assert forwarded(mail.subject), mail.subject
+    for mail in (m.status_mail(*parts(state), 0, None), m.failure_mail(6, "x"), m.recovered_mail(6)):
+        assert not forwarded(mail.subject), mail.subject

@@ -14,9 +14,9 @@ from datetime import datetime, timedelta
 
 from . import mail as m
 from .config import (END, FAIL_ALERT_AFTER, HISTORY_FILE, STATE_FILE, STATUS_HOUR, STATUS_WEEKDAY,
-                     TARGET_FROM, append_jsonl, now, read_json, write_json)
+                     append_jsonl, now, read_json, write_json)
 from .scrape import QueueActive, ScrapeError, scrape
-from .track import fmt_date, fmt_dt, pattern, season_rows, update, upcoming_fixtures
+from .track import fmt_dt, pattern, season_rows, update, upcoming_fixtures
 
 log = logging.getLogger("malaga")
 
@@ -56,10 +56,7 @@ def on_failure(state: dict, at: datetime, error: Exception, dry_run: bool) -> No
     append_jsonl(HISTORY_FILE, [] if dry_run else [{"at": at.isoformat(timespec="minutes"), "kind": "error",
                                                      "error": str(error)}])
     if state["failures"] == FAIL_ALERT_AFTER:
-        deliver(m.problem_mail("⚠️ Málaga-kaartencheck faalt", "De check mislukt al een uur",
-                               f"{FAIL_ALERT_AFTER} checks op rij mislukt. Laatste fout: {error}. "
-                               f"Je krijgt een mail als het weer werkt."),
-                m.recipients("STATUS_TO"), dry_run)
+        deliver(m.failure_mail(FAIL_ALERT_AFTER, str(error)), m.recipients("STATUS_TO"), dry_run)
 
 
 def on_queue(state: dict, at: datetime, dry_run: bool) -> None:
@@ -67,19 +64,12 @@ def on_queue(state: dict, at: datetime, dry_run: bool) -> None:
     log.warning("Waiting room is active")
     append_jsonl(HISTORY_FILE, [] if dry_run else [{"at": at.isoformat(timespec="minutes"), "kind": "queue"}])
     if state.get("queue_alerted") != at.date().isoformat():
-        deliver(m.problem_mail("⏳ Wachtrij actief op entradas.malagacf.com", "De wachtrij staat aan",
-                               "De kaartensite zet bezoekers nu in een wachtrij: er is een grote verkoop "
-                               "bezig. Kijk zelf even op entradas.malagacf.com."),
-                m.recipients("MAIL_TO"), dry_run)
+        deliver(m.queue_mail(), m.recipients("MAIL_TO"), dry_run)
         state["queue_alerted"] = at.date().isoformat()
 
 
 def finish(state: dict, at: datetime, dry_run: bool) -> None:
-    rows, p, fixtures = season_parts(state, at)
-    mail = m.Mail("🏁 Málaga-kaartencheck gestopt: samenvatting")
-    mail.add(*m.header("De check is klaar", f"Het weekend van {fmt_date(TARGET_FROM)} is voorbij."))
-    mail.add(*m.paragraph("Zet de GitHub-workflow uit (Actions → Check → Disable workflow). Wat we zagen:"))
-    deliver(m.season_sections(mail, rows, p, fixtures), m.recipients("MAIL_TO"), dry_run)
+    deliver(m.finished_mail(*season_parts(state, at)), m.recipients("MAIL_TO"), dry_run)
     state["finished"] = at.isoformat(timespec="minutes")
 
 
@@ -87,9 +77,7 @@ def check(state: dict, at: datetime, dry_run: bool, test: bool) -> None:
     first = not state.get("events")
     events = scrape()
     if state.get("failures", 0) >= FAIL_ALERT_AFTER:
-        deliver(m.problem_mail("✅ Málaga-kaartencheck werkt weer", "De check werkt weer",
-                               f"Na {state['failures']} mislukte checks lukt het weer."),
-                m.recipients("STATUS_TO"), dry_run)
+        deliver(m.recovered_mail(state["failures"]), m.recipients("STATUS_TO"), dry_run)
     state["failures"] = 0
 
     if test:
