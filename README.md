@@ -40,6 +40,10 @@ Repository secrets:
   verification). Without these the mail goes via `RESEND_API_KEY`, which (without a verified domain)
   only reaches the Resend account owner, so only `STATUS_TO` gets it, with a warning.
 
+Current setup: Resend only, `MAIL_TO` = `STATUS_TO` = Bart, and an Outlook.com inbox rule forwards
+mails from `onboarding@resend.dev` whose subject includes *staat aan*, *Nieuw online*, *Betis*,
+*Wachtrij* or *gestopt* to the other two. Status and failure mails aren't forwarded.
+
 Actions → Check → Run workflow: `test` sends the welcome mail to everyone, to check delivery.
 
 Locally: copy `.env.example` to `.env`, then `uv run python -m malaga.main --dry-run`; tests: `uv run pytest`.
