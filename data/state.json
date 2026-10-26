@@ -1,0 +1,110 @@
+{
+  "started": "2026-10-26T15:56+01:00",
+  "status_sent": "2026-10-26",
+  "failures": 0,
+  "events": {
+    "2304": {
+      "first_seen": "2026-10-26T15:56+01:00",
+      "baseline": true,
+      "title": "MÁLAGA CF - R. RACING CLUB",
+      "venue": "LAROSALEDA",
+      "when_text": "Saturday, 7/11/2026 14:00",
+      "when": "2026-11-07T14:00:00+01:00",
+      "url": "https://entradas.malagacf.com/en/malaga-cf---r.-racing-club-20261108-2100",
+      "button": "Purchase tickets",
+      "last_seen": "2026-10-26T15:56+01:00",
+      "listed": true,
+      "areas": {
+        "FONDO ALTO": [
+          "AVAILABLE",
+          32.5
+        ],
+        "FONDO MEDIO": [
+          "AVAILABLE",
+          40.5
+        ],
+        "FONDO BAJO": [
+          "AVAILABLE",
+          38.5
+        ],
+        "CURVA ALTA": [
+          "AVAILABLE",
+          35.5
+        ],
+        "CURVA MEDIA": [
+          "AVAILABLE",
+          46.5
+        ],
+        "CURVA BAJA": [
+          "AVAILABLE",
+          43.5
+        ],
+        "ANILLO INF CUBIERTO": [
+          "SOLD OUT",
+          49.5
+        ],
+        "PREFERENCIA ALTA ESQUINA": [
+          "AVAILABLE",
+          51.5
+        ],
+        "PREFERENCIA ALTA CENTRAL": [
+          "AVAILABLE",
+          57.5
+        ],
+        "PREFERENCIA MEDIA LATERAL": [
+          "AVAILABLE",
+          65.5
+        ],
+        "PREFERENCIA MEDIA CENTRAL": [
+          "AVAILABLE",
+          73.5
+        ],
+        "PREFERENCIA BAJA ESQUINA": [
+          "AVAILABLE",
+          54.5
+        ],
+        "PREFERENCIA BAJA LATERAL": [
+          "AVAILABLE",
+          62.5
+        ],
+        "PREFERENCIA BAJA CENTRAL": [
+          "AVAILABLE",
+          71.5
+        ],
+        "TRIBUNA ALTA ESQUINA": [
+          "AVAILABLE",
+          60.5
+        ],
+        "TRIBUNA ALTA CENTRAL": [
+          "AVAILABLE",
+          76.5
+        ],
+        "TRIBUNA MEDIA LATERAL": [
+          "AVAILABLE",
+          82.5
+        ],
+        "TRIBUNA MEDIA CENTRAL": [
+          "AVAILABLE",
+          87.5
+        ],
+        "TRIBUNA BAJA ESQUINA": [
+          "AVAILABLE",
+          68.5
+        ],
+        "TRIBUNA BAJA LATERAL": [
+          "AVAILABLE",
+          79.5
+        ],
+        "TRIBUNA BAJA CENTRAL": [
+          "AVAILABLE",
+          84.5
+        ],
+        "VIP PALCOS PREF": [
+          "AVAILABLE",
+          202.5
+        ]
+      },
+      "first_area_sold_out": "2026-10-26T15:56+01:00"
+    }
+  }
+}
