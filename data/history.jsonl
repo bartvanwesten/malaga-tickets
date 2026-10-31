@@ -16,3 +16,4 @@
 {"at": "2026-10-31T00:47+01:00", "event": "2304", "kind": "changed", "changes": ["CURVA MEDIA: uitverkocht"]}
 {"at": "2026-10-31T09:57+01:00", "event": "2304", "kind": "changed", "changes": ["TRIBUNA ALTA ESQUINA: available", "TRIBUNA BAJA LATERAL: available"]}
 {"at": "2026-10-31T16:11+01:00", "event": "2304", "kind": "changed", "changes": ["FONDO ALTO: blocked", "FONDO MEDIO: blocked", "CURVA BAJA: available", "PREFERENCIA ALTA ESQUINA: available", "PREFERENCIA BAJA LATERAL: available", "TRIBUNA ALTA ESQUINA: uitverkocht", "TRIBUNA ALTA CENTRAL: available", "TRIBUNA BAJA LATERAL: uitverkocht"]}
+{"at": "2026-10-31T20:17+01:00", "event": "2304", "kind": "changed", "changes": ["FONDO ALTO: available", "FONDO MEDIO: uitverkocht", "CURVA BAJA: uitverkocht", "PREFERENCIA ALTA CENTRAL: available", "PREFERENCIA MEDIA LATERAL: available", "PREFERENCIA BAJA LATERAL: uitverkocht", "TRIBUNA ALTA CENTRAL: uitverkocht"]}
