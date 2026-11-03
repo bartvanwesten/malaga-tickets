@@ -12,7 +12,7 @@
       "when": "2026-11-07T14:00:00+01:00",
       "url": "https://entradas.malagacf.com/en/malaga-cf---r.-racing-club-20261108-2100",
       "button": "Purchase tickets",
-      "last_seen": "2026-11-03T17:33+01:00",
+      "last_seen": "2026-11-03T22:58+01:00",
       "listed": true,
       "areas": {
         "FONDO ALTO": [
@@ -24,11 +24,11 @@
           40.5
         ],
         "FONDO BAJO": [
-          "AVAILABLE",
+          "SOLD OUT",
           38.5
         ],
         "CURVA ALTA": [
-          "AVAILABLE",
+          "SOLD OUT",
           35.5
         ],
         "CURVA MEDIA": [
@@ -36,11 +36,11 @@
           46.5
         ],
         "CURVA BAJA": [
-          "AVAILABLE",
+          "SOLD OUT",
           43.5
         ],
         "ANILLO INF CUBIERTO": [
-          "AVAILABLE",
+          "SOLD OUT",
           49.5
         ],
         "PREFERENCIA ALTA ESQUINA": [
@@ -48,7 +48,7 @@
           51.5
         ],
         "PREFERENCIA ALTA CENTRAL": [
-          "AVAILABLE",
+          "BLOCKED",
           57.5
         ],
         "PREFERENCIA MEDIA LATERAL": [
@@ -64,7 +64,7 @@
           54.5
         ],
         "PREFERENCIA BAJA LATERAL": [
-          "SOLD OUT",
+          "AVAILABLE",
           62.5
         ],
         "PREFERENCIA BAJA CENTRAL": [
@@ -76,7 +76,7 @@
           60.5
         ],
         "TRIBUNA ALTA CENTRAL": [
-          "AVAILABLE",
+          "BLOCKED",
           76.5
         ],
         "TRIBUNA MEDIA LATERAL": [
@@ -84,7 +84,7 @@
           82.5
         ],
         "TRIBUNA MEDIA CENTRAL": [
-          "SOLD OUT",
+          "AVAILABLE",
           87.5
         ],
         "TRIBUNA BAJA ESQUINA": [
@@ -96,7 +96,7 @@
           79.5
         ],
         "TRIBUNA BAJA CENTRAL": [
-          "SOLD OUT",
+          "AVAILABLE",
           84.5
         ],
         "VIP PALCOS PREF": [
