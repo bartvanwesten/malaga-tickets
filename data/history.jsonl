@@ -34,3 +34,4 @@
 {"at": "2026-11-04T18:11+01:00", "event": "2304", "kind": "changed", "changes": ["FONDO MEDIO: available", "CURVA BAJA: available", "PREFERENCIA BAJA ESQUINA: available", "PREFERENCIA BAJA LATERAL: uitverkocht", "PREFERENCIA BAJA CENTRAL: uitverkocht", "TRIBUNA MEDIA CENTRAL: uitverkocht", "TRIBUNA BAJA LATERAL: blocked"]}
 {"at": "2026-11-04T23:37+01:00", "event": "2304", "kind": "changed", "changes": ["FONDO ALTO: available", "FONDO BAJO: blocked", "CURVA BAJA: uitverkocht", "PREFERENCIA MEDIA CENTRAL: uitverkocht", "TRIBUNA MEDIA LATERAL: available", "TRIBUNA BAJA LATERAL: available"]}
 {"at": "2026-11-05T03:46+01:00", "event": "2304", "kind": "changed", "changes": ["FONDO BAJO: available", "VIP PALCOS PREF: uitverkocht"]}
+{"at": "2026-11-05T10:54+01:00", "event": "2304", "kind": "changed", "changes": ["FONDO MEDIO: uitverkocht", "CURVA ALTA: available", "CURVA BAJA: available", "PREFERENCIA ALTA CENTRAL: uitverkocht"]}
