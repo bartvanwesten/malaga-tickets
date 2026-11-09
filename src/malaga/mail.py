@@ -21,7 +21,7 @@ from email.utils import formataddr
 
 import httpx
 
-from .config import HOME_FIXTURES, LISTING_URL, TARGET_FROM, TARGET_TO, now
+from .config import CHECK_EVERY, GAP_ALERT, HOME_FIXTURES, LISTING_URL, TARGET_FROM, TARGET_TO, now
 from .scrape import Event
 from .track import (DAYS, MONTHS, SOLD_OUT, Pattern, Row, display, fixture_of, fmt_date, fmt_dt, fmt_price,
                     is_target, venue_name)
@@ -104,7 +104,7 @@ class Mail:
 
     @property
     def text(self) -> str:
-        footer = (f"Málaga Ticketalert: automatische controle van {LISTING_URL}, elke 10 minuten, "
+        footer = (f"Málaga Ticketalert: automatische controle van {LISTING_URL}, elke 5 minuten, "
                   f"tot en met {long_date(TARGET_TO)}.")
         return "\n\n".join([t for _, t in self.blocks if t] + [footer])
 
@@ -118,7 +118,7 @@ class Mail:
             f'</td></tr>')
         footer = (f'<div style="font-family:{FONT};font-size:12px;line-height:1.6;color:{MUTED};text-align:center">'
                   f'Automatische controle van <a href="{esc(LISTING_URL)}" style="color:{MUTED}">'
-                  f'entradas.malagacf.com</a>, elke 10 minuten, tot en met {esc(long_date(TARGET_TO))}.<br>'
+                  f'entradas.malagacf.com</a>, elke 5 minuten, tot en met {esc(long_date(TARGET_TO))}.<br>'
                   f'Kaarten koop je altijd zelf op de officiële site van Málaga CF.</div>')
         return (
             f'<!doctype html><html lang="nl"><head><meta charset="utf-8">'
@@ -305,8 +305,9 @@ def pattern_section(p: Pattern) -> list[tuple[str, str]]:
                 "meetpunt. Daarna voorspelt elke mail wanneer de kaarten voor Málaga – Betis online komen.")
     else:
         days = ", ".join(DAY_NAMES[DAYS.index(d)] for d in sorted(set(p.weekdays), key=DAYS.index))
-        hours = f"tussen {min(p.hours)}:00 en {max(p.hours) + 1}:00 uur" if p.hours else ""
-        text = (f"Tot nu toe kwamen de kaarten op {days} online, {hours}, gemiddeld {lead} voor de aftrap. "
+        moment = "".join([f" op {days}" if days else "",
+                          f" tussen {min(p.hours)}:00 en {max(p.hours) + 1}:00 uur" if p.hours else ""])
+        text = (f"Tot nu toe kwamen de kaarten{moment} online, gemiddeld {lead} voor de aftrap. "
                 f"Houdt dat stand, dan verschijnen de kaarten voor Málaga – Betis ({fmt_date(p.target_date)}) "
                 f"rond {fmt_date(p.predicted)}.")
     blocks.append((row(f'<div style="font-family:{FONT};font-size:14px;line-height:1.6;color:{TEXT}">{esc(text)}</div>',
@@ -381,7 +382,7 @@ def welcome_mail(events: list[Event], rows: list[Row], p: Pattern, fixtures: lis
     mail.add(*hero("Systeem actief", "De ticketalert voor Málaga CF staat aan",
                    "Vanaf nu hoor je het direct als er kaarten voor een nieuwe thuiswedstrijd online komen."))
     mail.add(*paragraph(
-        "Elke tien minuten controleren we entradas.malagacf.com. Komt er een nieuwe wedstrijd in de verkoop, "
+        "Elke vijf minuten controleren we entradas.malagacf.com. Komt er een nieuwe wedstrijd in de verkoop, "
         "dan krijg je meteen een mail met een directe link om kaarten te kopen. Voor Málaga – Real Betis op "
         f"{long_date(HOME_FIXTURES[-1][1])}, de wedstrijd van ons weekend, volgt een "
         "aparte alarmmelding, en daarna een update zodra vakken uitverkopen."))
@@ -391,19 +392,42 @@ def welcome_mail(events: list[Event], rows: list[Row], p: Pattern, fixtures: lis
     return season_sections(mail, rows, p, fixtures)
 
 
+def fmt_minutes(minutes: int) -> str:
+    if minutes < 60:
+        return f"{minutes} min"
+    hours, rest = divmod(minutes, 60)
+    return f"{hours} u {rest:02d} min" if rest else f"{hours} uur"
+
+
 def status_mail(rows: list[Row], p: Pattern, fixtures: list[tuple], failures_this_week: int,
-                last_change: str | None) -> Mail:
-    mail = Mail("Weekstatus Málaga Ticketalert", "De controle draait. Overzicht van de afgelopen week.")
-    if failures_this_week:
-        mail.add(*hero("Weekstatus", "De controle draait, met enkele haperingen",
-                       "Deze update komt elke maandag. Geen maandagmail? Dan is er iets mis."))
-    else:
-        mail.add(*hero("Weekstatus", "Alles werkt naar behoren",
-                       "Deze update komt elke maandag. Geen maandagmail? Dan is er iets mis."))
-    mail.add(*stats([(str(failures_this_week), "mislukte controles, afgelopen 7 dagen"),
-                     (last_change or "geen", "laatste wijziging op de site"),
-                     (str(len(fixtures)), "thuiswedstrijden nog te verwachten")]))
+                last_change: str | None, coverage: dict) -> Mail:
+    """coverage: {"since", "checks", "longest_gap" (minutes)} since the previous status mail."""
+    since = datetime.fromisoformat(coverage["since"])
+    expected = max(1, round((now() - since) / CHECK_EVERY))
+    gap = coverage["longest_gap"]
+    healthy = not failures_this_week and gap * 60 <= GAP_ALERT.total_seconds()
+    mail = Mail("Weekstatus Málaga Ticketalert",
+                f"{coverage['checks']} controles sinds {fmt_dt(since)}. Overzicht van de afgelopen week.")
+    mail.add(*hero("Weekstatus", "Alles werkt naar behoren" if healthy else "De controle draait, met haperingen",
+                   "Deze update komt elke maandag. Geen maandagmail? Dan is er iets mis."))
+    mail.add(*stats([(f"{coverage['checks']} / {expected}", f"controles uitgevoerd / verwacht sinds {fmt_dt(since)}"),
+                     (fmt_minutes(gap), "langste tijd zonder controle"),
+                     (str(failures_this_week), "mislukte controles, afgelopen 7 dagen")]))
+    mail.add(*paragraph(f"Laatste wijziging op de site: {last_change or 'geen deze week'}."))
     return season_sections(mail, rows, p, fixtures)
+
+
+def gap_mail(last: datetime, at: datetime) -> Mail:
+    minutes = round((at - last).total_seconds() / 60)
+    mail = Mail(f"Onderbreking Málaga Ticketalert: {fmt_minutes(minutes)} geen controle",
+                "De controles liepen een tijd niet. Ze draaien weer.")
+    mail.add(*hero("Onderbreking", f"{fmt_minutes(minutes)} lang geen controle",
+                   f"Van {fmt_dt(last)} tot {fmt_dt(at)} is de kaartensite niet gecontroleerd.", alarm=True))
+    mail.add(*paragraph("De controles draaien weer. Wat in die tijd online kwam, haalt deze controle alsnog "
+                        "in: een nieuwe wedstrijd krijg je meteen in een aparte mail. De oorzaak ligt bij "
+                        "GitHub Actions (vertraagde of overgeslagen runs); kijk bij Actions → Check als dit "
+                        "vaker gebeurt."))
+    return mail.add(row("", "padding:32px 0 0"), "")
 
 
 def failure_mail(failures: int, error: str) -> Mail:

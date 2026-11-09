@@ -6,6 +6,7 @@ import pytest
 
 from malaga.config import TZ
 from malaga.scrape import QueueActive, fetch, parse_event, parse_listing, parse_when
+from malaga.track import is_target
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -52,3 +53,16 @@ def test_layout_change_is_an_error():
     from malaga.scrape import ScrapeError
     with pytest.raises(ScrapeError):
         parse_listing("<html><body>Maintenance</body></html>")
+
+
+def test_event_links_without_a_card_still_count():
+    html = FIXTURES.joinpath("listing_en.html").read_text(encoding="utf-8").replace("gFitxaGen", "gCardNew")
+    html = html.replace("r.-racing-club-20261108-2100", "real-betis-20270221-2100")
+    (ev,) = parse_listing(html)
+    assert ev.title == "MALAGA CF - REAL BETIS"
+    assert is_target(ev.title, ev.when)
+
+
+def test_cards_and_links_agree_on_the_real_page():
+    events = parse_listing(FIXTURES.joinpath("listing_en.html").read_text(encoding="utf-8"))
+    assert [ev.id for ev in events] == ["2304"]  # no duplicate from the link fallback

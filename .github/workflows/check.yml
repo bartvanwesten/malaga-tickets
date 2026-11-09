@@ -1,29 +1,40 @@
 name: Check
 
+# GitHub runs `schedule` triggers best-effort: a */10 cron here fired only 4-5 times a day
+# (Oct-Nov 2026), so a new match went unnoticed for hours. So the checking doesn't hang on cron:
+# a check run loops, checking every 5 minutes for ~5.5 hours, and queues its own successor
+# through workflow_dispatch, which GitHub starts right away (and which GITHUB_TOKEN may trigger).
+# The cron stays only as a backup that restarts the relay if it ever breaks; the concurrency
+# group keeps it to one run at a time. A gap between checks gets mailed by the next check, and
+# HEALTHCHECK_URL (healthchecks.io) mails when the checks stop altogether.
+
 on:
   schedule:
-    # Every 10 minutes (GitHub may start runs late or skip some under load). The script stops
-    # checking after the target weekend; disable the workflow then.
-    - cron: "3-59/10 * * * *"
+    - cron: "7 * * * *"
   workflow_dispatch:
     inputs:
       mode:
-        description: "check: normal run · dry-run: log the mail only · test: send the welcome mail with what's online now to everyone · status: send the weekly status mail now"
+        description: "check: start the check loop · dry-run: log the mail only · test: send the welcome mail with what's online now · status: send the weekly status mail now"
         type: choice
         options: [check, dry-run, test, status]
         default: check
 
 permissions:
   contents: write  # commit data/ (state and history)
+  actions: write   # queue the next run of the relay
 
 concurrency:
-  group: check
+  # One check loop at a time; a newer trigger waits (pending) and replaces an older waiting one.
+  # The other modes don't touch state and run alongside.
+  group: ${{ (inputs.mode || 'check') == 'check' && 'check' || format('manual-{0}', github.run_id) }}
 
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 350
     env:
+      MODE: ${{ inputs.mode || 'check' }}
+      GH_TOKEN: ${{ github.token }}
       MAIL_TO: ${{ secrets.MAIL_TO }}
       STATUS_TO: ${{ secrets.STATUS_TO }}
       SMTP_HOST: ${{ secrets.SMTP_HOST }}
@@ -31,6 +42,7 @@ jobs:
       SMTP_USER: ${{ secrets.SMTP_USER }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}  # Gmail app password
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}  # fallback: reaches STATUS_TO only
+      HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}  # optional heartbeat
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -38,20 +50,55 @@ jobs:
           enable-cache: true
       - run: uv sync --frozen --no-dev
 
-      - name: Check the ticket site
-        run: |
-          case "${{ inputs.mode }}" in
-            dry-run) uv run python -m malaga.main --dry-run ;;
-            test)    uv run python -m malaga.main --test ;;
-            status)  uv run python -m malaga.main --status ;;
-            *)       uv run python -m malaga.main ;;
-          esac
+      - name: Queue the next run
+        # Queued now, so a successor exists even if this runner dies; it waits for this run.
+        if: env.MODE == 'check'
+        run: gh workflow run check.yml --ref main -f mode=check || echo "::warning::could not queue the next run"
 
-      - name: Commit state
+      - name: Check every 5 minutes
+        if: env.MODE == 'check'
         run: |
           git config user.name "malaga-tickets[bot]"
           git config user.email "malaga-tickets@users.noreply.github.com"
-          git add data/
-          git diff --cached --quiet && exit 0
-          git commit -q -m "Update ticket state"
-          git pull -q --rebase && git push -q
+          commit() {
+            git add data/
+            git diff --cached --quiet && return 0
+            git commit -q -m "Update ticket state"
+            for i in 1 2 3; do
+              git pull -q --rebase && git push -q && return 0
+              git rebase --abort 2>/dev/null; sleep 10
+            done
+            echo "::warning::could not push the state"
+          }
+          stop=$((SECONDS + 325 * 60))  # stay inside the job timeout, then hand over
+          committed=$SECONDS
+          failed=0
+          while :; do
+            began=$SECONDS
+            uv run python -m malaga.main || { failed=1; echo "::error::check failed, retrying in 5 minutes"; }
+            # Commit at once when a mail went out or something changed, else hourly.
+            if [ -f .commit-now ] || [ $((SECONDS - committed)) -ge 3600 ]; then
+              commit; rm -f .commit-now; committed=$SECONDS
+            fi
+            [ $((SECONDS + 300)) -ge $stop ] && break
+            pause=$((300 - (SECONDS - began)))
+            [ $pause -gt 0 ] && sleep $pause
+          done
+          commit
+          exit $failed
+
+      - name: Make sure a next run is queued
+        if: always() && env.MODE == 'check'
+        run: |
+          waiting=$(gh run list -w check.yml -L 20 --json databaseId,status \
+            --jq '[.[] | select(.databaseId != ${{ github.run_id }}) | select(.status == "pending" or .status == "queued" or .status == "waiting" or .status == "requested")] | length' || echo 0)
+          [ "${waiting:-0}" -gt 0 ] || gh workflow run check.yml --ref main -f mode=check
+
+      - name: Run once (${{ env.MODE }})
+        if: env.MODE != 'check'
+        run: |
+          case "$MODE" in
+            dry-run) uv run python -m malaga.main --dry-run ;;
+            test)    uv run python -m malaga.main --test ;;
+            status)  uv run python -m malaga.main --status ;;
+          esac

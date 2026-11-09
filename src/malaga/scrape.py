@@ -23,6 +23,8 @@ USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 QUEUE_HOST = "queue.koobin.com"
 DATE_RE = re.compile(r"(\d{1,2})/(\d{1,2})/(\d{4})\s+(\d{1,2}):(\d{2})")
 PRICE_RE = re.compile(r"(\d+(?:[.,]\d+)?)")
+# An event page link, e.g. /en/malaga-cf---athletic-club-20261128-1615 (slug, date, time).
+EVENT_LINK_RE = re.compile(r"/([a-z0-9.\-]+?)-(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})/?$")
 
 
 class ScrapeError(RuntimeError):
@@ -105,7 +107,33 @@ def parse_listing(html: str) -> list[Event]:
             url=link.attributes.get("href", "") if link else "",
             button=_text(card.css_first(".gBoto")),
         ))
-    return events
+    return events + unparsed_links(tree, events)
+
+
+def unparsed_links(tree: HTMLParser, events: list[Event]) -> list[Event]:
+    """Safety net: event links on the page that no card accounts for (the card markup changed, or
+    a match has a different kind of card). They still count as events, named from the link, so a
+    layout change can't hide a new match."""
+    known = {ev.url.rstrip("/") for ev in events}
+    extra = {}
+    for a in tree.css("a[href]"):
+        url = a.attributes.get("href") or ""
+        m = EVENT_LINK_RE.search(url)
+        if not m or url.rstrip("/") in known or url in extra:
+            continue
+        slug, *nums = m.groups()
+        year, month, day, hour, minute = map(int, nums)
+        try:
+            when = datetime(year, month, day, hour, minute, tzinfo=TZ)
+        except ValueError:
+            when = None
+        extra[url] = Event(id=f"link:{slug}-{''.join(m.groups()[1:])}",
+                           title=" - ".join(p.replace("-", " ") for p in slug.split("---")).upper(), venue="",
+                           when_text=f"{day}/{month}/{year} {hour:02d}:{minute:02d}", when=when, url=url,
+                           button="")
+    if extra:
+        log.warning("%d event link(s) without a readable card: %s", len(extra), ", ".join(extra))
+    return list(extra.values())
 
 
 def parse_event(html: str) -> list[Area]:

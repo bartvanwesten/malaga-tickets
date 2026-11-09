@@ -1,5 +1,5 @@
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 STATE_FILE = DATA_DIR / "state.json"
 HISTORY_FILE = DATA_DIR / "history.jsonl"
+COMMIT_FLAG = ROOT / ".commit-now"  # tells the workflow loop to commit data/ right away
 
 load_dotenv(ROOT / ".env")
 
@@ -33,7 +34,10 @@ HOME_FIXTURES = [
     (25, date(2027, 2, 21), "Real Betis", "BETIS"),
 ]
 
-FAIL_ALERT_AFTER = 6  # consecutive failed checks (~1 hour) before mailing STATUS_TO
+# The workflow checks every 5 minutes (see .github/workflows/check.yml).
+CHECK_EVERY = timedelta(minutes=5)
+GAP_ALERT = timedelta(minutes=45)  # longer without a check: mail STATUS_TO, checks were not running
+FAIL_ALERT_AFTER = 12  # consecutive failed checks (~1 hour) before mailing STATUS_TO
 STATUS_WEEKDAY = 0  # weekly status mail on Monday...
 STATUS_HOUR = 9  # ...from 09:00
 

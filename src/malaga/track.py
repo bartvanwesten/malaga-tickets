@@ -9,7 +9,7 @@ import unicodedata
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 
-from .config import HOME_FIXTURES, TARGET_FROM, TARGET_KEYWORD, TARGET_TO
+from .config import GAP_ALERT, HOME_FIXTURES, TARGET_FROM, TARGET_KEYWORD, TARGET_TO
 from .scrape import Event
 
 DAYS = ["ma", "di", "wo", "do", "vr", "za", "zo"]
@@ -113,8 +113,10 @@ def area_changes(old: dict | None, new: dict | None) -> list[str]:
     return lines
 
 
-def update(state: dict, events: list[Event], at: datetime, baseline: bool = False) -> Changes:
-    """Fold this check into state; baseline marks events that were already online when we started."""
+def update(state: dict, events: list[Event], at: datetime, baseline: bool = False,
+           since: str | None = None) -> Changes:
+    """Fold this check into state; baseline marks events that were already online when we started.
+    since: the previous check, so a new event's release lies between since and at."""
     ch = Changes()
     saved = state.setdefault("events", {})
     stamp = at.isoformat(timespec="minutes")
@@ -126,6 +128,8 @@ def update(state: dict, events: list[Event], at: datetime, baseline: bool = Fals
         if s is None:
             ch.new.append(ev)
             s = saved[ev.id] = {"first_seen": stamp, "baseline": baseline}
+            if since and not baseline:
+                s["not_before"] = since
             ch.history.append({"at": stamp, "event": ev.id, "kind": "new", **ev.to_dict()})
         elif not s["listed"]:
             ch.changed.append((ev, ["weer op de site"]))
@@ -174,10 +178,16 @@ class Row:
     sold_out: datetime | None
     listed: bool
     url: str
+    not_before: datetime | None = None  # the check before first_seen: the release lies in between
 
     @property
     def lead_days(self) -> float | None:
         return (self.when - self.first_seen).total_seconds() / 86400 if self.when else None
+
+    @property
+    def exact(self) -> bool:
+        """Release time known to within a normal check interval (not after a gap in the checks)."""
+        return self.not_before is None or self.first_seen - self.not_before <= GAP_ALERT
 
 
 def season_rows(state: dict) -> list[Row]:
@@ -185,7 +195,8 @@ def season_rows(state: dict) -> list[Row]:
     def dt(v):
         return datetime.fromisoformat(v) if v else None
     rows = [Row(s["title"], _when(s), dt(s["first_seen"]), s.get("baseline", False),
-                dt(s.get("first_area_sold_out")), dt(s.get("sold_out")), s.get("listed", False), s["url"])
+                dt(s.get("first_area_sold_out")), dt(s.get("sold_out")), s.get("listed", False), s["url"],
+                dt(s.get("not_before")))
             for s in state.get("events", {}).values() if is_home(s["title"])]
     return sorted(rows, key=lambda r: (r.when is None, r.when or r.first_seen))
 
@@ -212,8 +223,9 @@ def pattern(state: dict) -> Pattern:
     return Pattern(
         observed=len(seen),
         median_lead=median,
-        weekdays=[DAYS[r.first_seen.weekday()] for r in seen],
-        hours=[r.first_seen.hour for r in seen],
+        weekdays=[DAYS[r.first_seen.weekday()] for r in seen
+                  if r.exact or r.not_before.date() == r.first_seen.date()],
+        hours=[r.first_seen.hour for r in seen if r.exact],
         target_date=target_date,
         predicted=predicted,
         target_row=target_row,

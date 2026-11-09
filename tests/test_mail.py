@@ -62,5 +62,7 @@ def test_forwarding_rule_subjects():
                  m.new_events_mail([BETIS], [], *parts(state)), m.new_events_mail([], [(BETIS, ["x"])], *parts(state)),
                  m.queue_mail(), m.finished_mail(*parts(state))):
         assert forwarded(mail.subject), mail.subject
-    for mail in (m.status_mail(*parts(state), 0, None), m.failure_mail(6, "x"), m.recovered_mail(6)):
+    coverage = {"since": "2027-02-01T09:00+01:00", "checks": 2000, "longest_gap": 12}
+    for mail in (m.status_mail(*parts(state), 0, None, coverage), m.failure_mail(6, "x"), m.recovered_mail(6),
+                 m.gap_mail(datetime(2027, 2, 8, 1, 0, tzinfo=TZ), NOW)):
         assert not forwarded(mail.subject), mail.subject
