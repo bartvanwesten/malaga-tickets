@@ -55,3 +55,4 @@
 {"at": "2026-11-09T16:48+01:00", "event": "2466", "kind": "changed", "changes": ["ANILLO INF CUBIERTO: blocked", "TRIBUNA BAJA CENTRAL: blocked"]}
 {"at": "2026-11-09T16:53+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: available"]}
 {"at": "2026-11-09T16:58+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: blocked"]}
+{"at": "2026-11-09T17:03+01:00", "event": "2466", "kind": "changed", "changes": ["ANILLO INF CUBIERTO: available", "TRIBUNA BAJA CENTRAL: available"]}
