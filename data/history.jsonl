@@ -84,3 +84,4 @@
 {"at": "2026-11-10T02:09+01:00", "kind": "gap", "since": "2026-11-09T20:48+01:00", "minutes": 321}
 {"at": "2026-11-10T02:09+01:00", "event": "2466", "kind": "changed", "changes": ["ANILLO INF CUBIERTO: uitverkocht", "TRIBUNA MEDIA CENTRAL: blocked"]}
 {"at": "2026-11-10T02:24+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: available"]}
+{"at": "2026-11-10T02:29+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: blocked"]}
