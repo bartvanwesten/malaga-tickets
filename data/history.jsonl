@@ -113,3 +113,4 @@
 {"at": "2026-11-10T07:04+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: blocked"]}
 {"at": "2026-11-10T07:14+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: available"]}
 {"at": "2026-11-10T07:24+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: blocked"]}
+{"at": "2026-11-10T08:51+01:00", "kind": "gap", "since": "2026-11-10T07:29+01:00", "minutes": 82}
