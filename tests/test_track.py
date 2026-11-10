@@ -84,3 +84,14 @@ def test_fixtures_and_pattern():
     assert p.weekdays == ["ma"] and p.hours == [10]
     assert p.predicted == date(2027, 2, 8)
     assert [fx[2] for fx in upcoming_fixtures(state, date(2026, 11, 20))][0] == "FC Barcelona"
+
+
+def test_brief_blocked_flips_are_ignored():
+    state = {}
+    stand = lambda status: ev("2400", BETIS.title, BETIS.when, [Area("TRIBUNA MEDIA CENTRAL", status, 152.5)])
+    update(state, [stand("AVAILABLE")], at(1, 20, year=2027), baseline=True)
+    for i, status in enumerate(["BLOCKED", "AVAILABLE", "BLOCKED"]):
+        ch = update(state, [stand(status)], at(1, 21, 10 + i, year=2027))
+        assert not ch.changed and not ch.history and not ch.target_news()
+    ch = update(state, [stand("SOLD OUT")], at(1, 22, year=2027))
+    assert ch.target_news()[0][1] == ["TRIBUNA MEDIA CENTRAL: uitverkocht"]

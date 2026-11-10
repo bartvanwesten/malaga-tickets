@@ -15,6 +15,7 @@ from .scrape import Event
 DAYS = ["ma", "di", "wo", "do", "vr", "za", "zo"]
 MONTHS = ["jan", "feb", "mrt", "apr", "mei", "jun", "jul", "aug", "sep", "okt", "nov", "dec"]
 SOLD_OUT = "SOLD OUT"
+STEADY = ("AVAILABLE", SOLD_OUT)
 
 
 def fmt_dt(dt: datetime | None) -> str:
@@ -76,6 +77,15 @@ def _areas(ev: Event) -> dict | None:
     return None if ev.areas is None else {a.name: [a.status, a.price] for a in ev.areas}
 
 
+def steady(new: dict | None, old: dict | None) -> dict | None:
+    """Stands flip to BLOCKED and back every few minutes (seats held in baskets, it seems). Only
+    AVAILABLE and SOLD OUT count: any other status keeps the stand's last one of those."""
+    if new is None or not old:
+        return new
+    return {name: [old[name][0] if st not in STEADY and name in old else st, price]
+            for name, (st, price) in new.items()}
+
+
 @dataclass
 class Changes:
     new: list[Event] = field(default_factory=list)
@@ -123,8 +133,8 @@ def update(state: dict, events: list[Event], at: datetime, baseline: bool = Fals
     listed = {ev.id for ev in events}
 
     for ev in events:
-        areas = _areas(ev)
         s = saved.get(ev.id)
+        areas = steady(_areas(ev), s.get("areas") if s else None)
         if s is None:
             ch.new.append(ev)
             s = saved[ev.id] = {"first_seen": stamp, "baseline": baseline}

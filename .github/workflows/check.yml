@@ -45,6 +45,11 @@ jobs:
       HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}  # optional heartbeat
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The latest main, not the commit this run was queued at: a relay run waits ~5.5 hours
+          # and would otherwise start from that old state (seen 2026-11-09: false gap alerts,
+          # a repeated "Nieuw online", and state that couldn't be pushed).
+          ref: main
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
@@ -65,10 +70,11 @@ jobs:
             git diff --cached --quiet && return 0
             git commit -q -m "Update ticket state"
             for i in 1 2 3; do
-              git pull -q --rebase && git push -q && return 0
+              # -X theirs: on a clash in data/, this run's newer state wins
+              git pull -q --rebase -X theirs && git push -q && return 0
               git rebase --abort 2>/dev/null; sleep 10
             done
-            echo "::warning::could not push the state"
+            echo "::error::could not push the state"
           }
           stop=$((SECONDS + 325 * 60))  # stay inside the job timeout, then hand over
           committed=$SECONDS

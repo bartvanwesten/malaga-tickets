@@ -217,6 +217,6 @@
   "coverage": {
     "since": "2026-11-09T15:28+01:00",
     "checks": 130,
-    "longest_gap": 321
+    "longest_gap": 5
   }
 }
