@@ -115,3 +115,4 @@
 {"at": "2026-11-10T09:02+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: available"]}
 {"at": "2026-11-10T10:47+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-10T11:22+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
+{"at": "2026-11-10T19:38+01:00", "event": "2466", "kind": "changed", "changes": ["ANILLO INF CUBIERTO: available"]}
