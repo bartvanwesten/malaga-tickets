@@ -121,3 +121,4 @@
 {"at": "2026-11-11T04:28+01:00", "event": "2466", "kind": "changed", "changes": ["PREFERENCIA BAJA CENTRAL: uitverkocht"]}
 {"at": "2026-11-11T08:23+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-11T09:18+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
+{"at": "2026-11-11T10:13+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
