@@ -124,3 +124,4 @@
 {"at": "2026-11-11T10:13+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-11T17:04+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-11T17:44+01:00", "event": "2466", "kind": "changed", "changes": ["VIP PALCOS PREF: vak verdwenen"]}
+{"at": "2026-11-11T19:54+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
