@@ -118,7 +118,7 @@
       "when": "2026-11-28T16:15:00+01:00",
       "url": "https://entradas.malagacf.com/en/malaga-cf---athletic-club-20261128-1615",
       "button": "Purchase tickets",
-      "last_seen": "2026-11-12T08:54+01:00",
+      "last_seen": "2026-11-12T09:55+01:00",
       "listed": true,
       "areas": {
         "FONDO ALTO": [
@@ -213,10 +213,10 @@
       "first_area_sold_out": "2026-11-09T16:43+01:00"
     }
   },
-  "last_check": "2026-11-12T08:54+01:00",
+  "last_check": "2026-11-12T09:55+01:00",
   "coverage": {
     "since": "2026-11-09T15:28+01:00",
-    "checks": 715,
+    "checks": 728,
     "longest_gap": 6
   },
   "last_error": "do 12 nov 07:29: ConnectError: [Errno 104] Connection reset by peer"
