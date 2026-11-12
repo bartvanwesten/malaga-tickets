@@ -128,3 +128,4 @@
 {"at": "2026-11-11T22:39+01:00", "event": "2466", "kind": "changed", "changes": ["ANILLO INF CUBIERTO: available"]}
 {"at": "2026-11-12T06:04+01:00", "event": "2466", "kind": "changed", "changes": ["VIP PALCOS PREF: nieuw vak (sold out, €302,50)"]}
 {"at": "2026-11-12T07:29+01:00", "kind": "error", "error": "ConnectError: [Errno 104] Connection reset by peer"}
+{"at": "2026-11-12T10:20+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
