@@ -126,3 +126,4 @@
 {"at": "2026-11-11T17:44+01:00", "event": "2466", "kind": "changed", "changes": ["VIP PALCOS PREF: vak verdwenen"]}
 {"at": "2026-11-11T19:54+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-11T22:39+01:00", "event": "2466", "kind": "changed", "changes": ["ANILLO INF CUBIERTO: available"]}
+{"at": "2026-11-12T06:04+01:00", "event": "2466", "kind": "changed", "changes": ["VIP PALCOS PREF: nieuw vak (sold out, €302,50)"]}

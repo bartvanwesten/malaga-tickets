@@ -118,7 +118,7 @@
       "when": "2026-11-28T16:15:00+01:00",
       "url": "https://entradas.malagacf.com/en/malaga-cf---athletic-club-20261128-1615",
       "button": "Purchase tickets",
-      "last_seen": "2026-11-12T05:39+01:00",
+      "last_seen": "2026-11-12T06:04+01:00",
       "listed": true,
       "areas": {
         "FONDO ALTO": [
@@ -204,15 +204,19 @@
         "TRIBUNA BAJA CENTRAL": [
           "AVAILABLE",
           147.5
+        ],
+        "VIP PALCOS PREF": [
+          "SOLD OUT",
+          302.5
         ]
       },
       "first_area_sold_out": "2026-11-09T16:43+01:00"
     }
   },
-  "last_check": "2026-11-12T05:39+01:00",
+  "last_check": "2026-11-12T06:04+01:00",
   "coverage": {
     "since": "2026-11-09T15:28+01:00",
-    "checks": 676,
+    "checks": 681,
     "longest_gap": 6
   },
   "last_error": "wo 11 nov 19:54: event grid not found: page layout changed?"
