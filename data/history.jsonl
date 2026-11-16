@@ -137,3 +137,4 @@
 {"at": "2026-11-15T14:54+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: available"]}
 {"at": "2026-11-15T19:19+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-16T15:36+01:00", "event": "2466", "kind": "changed", "changes": ["FONDO MEDIO: uitverkocht"]}
+{"at": "2026-11-16T17:16+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA BAJA CENTRAL: uitverkocht"]}
