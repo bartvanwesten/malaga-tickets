@@ -155,3 +155,4 @@
 {"at": "2026-11-18T12:09+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-18T17:24+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-18T20:04+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
+{"at": "2026-11-18T20:14+01:00", "event": "2466", "kind": "changed", "changes": ["FONDO MEDIO: available"]}
