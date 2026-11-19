@@ -162,3 +162,4 @@
 {"at": "2026-11-19T14:10+01:00", "event": "2466", "kind": "changed", "changes": ["VIP PALCOS PREF: available"]}
 {"at": "2026-11-19T15:45+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-19T16:45+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA BAJA LATERAL: uitverkocht"]}
+{"at": "2026-11-19T17:05+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA BAJA LATERAL: available"]}
