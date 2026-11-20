@@ -118,7 +118,7 @@
       "when": "2026-11-28T16:15:00+01:00",
       "url": "https://entradas.malagacf.com/en/malaga-cf---athletic-club-20261128-1615",
       "button": "Purchase tickets",
-      "last_seen": "2026-11-20T17:52+01:00",
+      "last_seen": "2026-11-20T18:47+01:00",
       "listed": true,
       "areas": {
         "FONDO ALTO": [
@@ -142,7 +142,7 @@
           80.5
         ],
         "CURVA BAJA": [
-          "SOLD OUT",
+          "AVAILABLE",
           75.5
         ],
         "ANILLO INF CUBIERTO": [
@@ -213,10 +213,10 @@
       "first_area_sold_out": "2026-11-09T16:43+01:00"
     }
   },
-  "last_check": "2026-11-20T17:52+01:00",
+  "last_check": "2026-11-20T18:47+01:00",
   "coverage": {
     "since": "2026-11-16T09:00+01:00",
-    "checks": 1277,
+    "checks": 1288,
     "longest_gap": 6
   },
   "last_error": "vr 20 nov 14:42: event grid not found: page layout changed?"
