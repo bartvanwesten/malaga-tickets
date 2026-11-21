@@ -178,3 +178,4 @@
 {"at": "2026-11-21T08:58+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-21T11:59+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-21T14:24+01:00", "event": "2466", "kind": "changed", "changes": ["CURVA BAJA: uitverkocht"]}
+{"at": "2026-11-21T20:44+01:00", "event": "2466", "kind": "changed", "changes": ["PREFERENCIA BAJA LATERAL: uitverkocht"]}
