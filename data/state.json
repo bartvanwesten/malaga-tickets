@@ -1,7 +1,7 @@
 {
   "started": "2026-10-26T15:56+01:00",
   "status_sent": "2026-11-16",
-  "failures": 0,
+  "failures": 1,
   "events": {
     "2304": {
       "first_seen": "2026-10-26T15:56+01:00",
@@ -216,8 +216,8 @@
   "last_check": "2026-11-21T06:28+01:00",
   "coverage": {
     "since": "2026-11-16T09:00+01:00",
-    "checks": 1430,
+    "checks": 1431,
     "longest_gap": 6
   },
-  "last_error": "vr 20 nov 21:08: event grid not found: page layout changed?"
+  "last_error": "za 21 nov 06:28: event grid not found: page layout changed?"
 }
