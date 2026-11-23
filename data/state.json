@@ -1,7 +1,7 @@
 {
   "started": "2026-10-26T15:56+01:00",
   "status_sent": "2026-11-23",
-  "failures": 1,
+  "failures": 2,
   "events": {
     "2304": {
       "first_seen": "2026-10-26T15:56+01:00",
@@ -213,11 +213,11 @@
       "first_area_sold_out": "2026-11-09T16:43+01:00"
     }
   },
-  "last_check": "2026-11-23T15:41+01:00",
+  "last_check": "2026-11-23T15:46+01:00",
   "coverage": {
     "since": "2026-11-23T09:01+01:00",
-    "checks": 81,
+    "checks": 82,
     "longest_gap": 6
   },
-  "last_error": "ma 23 nov 15:41: event grid not found: page layout changed?"
+  "last_error": "ma 23 nov 15:46: event grid not found: page layout changed?"
 }
