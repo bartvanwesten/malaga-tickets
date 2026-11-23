@@ -215,3 +215,4 @@
 {"at": "2026-11-23T15:46+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-23T15:56+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-23T16:31+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA BAJA LATERAL: available"]}
+{"at": "2026-11-23T16:56+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
