@@ -219,3 +219,4 @@
 {"at": "2026-11-23T17:01+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-23T18:12+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-23T19:07+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
+{"at": "2026-11-23T19:42+01:00", "event": "2466", "kind": "changed", "changes": ["FONDO BAJO: uitverkocht"]}
