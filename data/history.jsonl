@@ -244,3 +244,4 @@
 {"at": "2026-11-27T16:07+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-27T16:17+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-27T18:38+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
+{"at": "2026-11-27T18:43+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA CENTRAL: available"]}
