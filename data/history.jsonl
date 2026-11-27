@@ -237,3 +237,4 @@
 {"at": "2026-11-25T14:25+01:00", "event": "2466", "kind": "changed", "changes": ["TRIBUNA MEDIA LATERAL: available"]}
 {"at": "2026-11-25T18:20+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
 {"at": "2026-11-25T21:55+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
+{"at": "2026-11-27T13:07+01:00", "kind": "error", "error": "event grid not found: page layout changed?"}
