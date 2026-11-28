@@ -214,10 +214,10 @@
       "removed_at": "2026-11-28T16:59+01:00"
     }
   },
-  "last_check": "2026-11-28T16:59+01:00",
+  "last_check": "2026-11-28T18:04+01:00",
   "coverage": {
     "since": "2026-11-23T09:01+01:00",
-    "checks": 1558,
+    "checks": 1571,
     "longest_gap": 6
   },
   "last_error": "za 28 nov 15:44: event grid not found: page layout changed?"
